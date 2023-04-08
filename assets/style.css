@@ -163,6 +163,18 @@
     padding: 2.5%;
   }
   
+  .container-fluid {
+    display: flex;
+  }
+  
+  .col-md-3 {
+    width: 100%;
+  }
+  
+  .col-md-9 {
+    width: 100%;
+  }
+
   /* FORM */
   .form-label,
   .form-input,
