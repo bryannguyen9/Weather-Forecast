@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+    <link rel="stylesheet" href="./assets/style.css" />
+    <title>Weather Forecast</title>
+  </head>
+  <body>
+    <header class="hero">
+        <h1 class="app-title">
+            <i class="fab"></i> Weather Dashboard
+        </h1>
+        <p>Search for a city and find the 5 day forecast!
+        </p>
+    </header>
+
+    <main class="flex-row justify-space-between">
+        <div class="col-12 col-md-3">
+    
+          <div class="card">
+            <h3 class="card-header text-uppercase">Search for a City:</h3>
+            <form id="user-form" class="card-body">
+              <label class="form-label" for="city">City</label>
+              <input name="city" id="city" type="text" autofocus="true" class="form-input" />
+              <button type="submit" class="btn">Get 5 Day Forecast</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="row col-12 col-md-6">
+            <h2 class="subtitle">Current City Current Date</h2> <!--get dayjs for current day create city variable to put city input here-->
+        </div>
+        <div class="row col-12 col-md-6">
+            <h2 class="subtitle">5 Day Forecast: <span id="city-search-term"></span></h2>
+            <div id="cities-container" class="list-group"></div><!--might have to change class here to something horizontal-->
+        </div>
+        <div class="col-12 col-sm-6 col-lg-2 mb-3">
+            <div class="card">
+              <h3 class="card-header bg-info">
+                Day 1
+              </h3>
+              <div class="card-body">
+                <p class="card-text">
+                    Forecast info
+                </p>
+                <button class="btn btn-block btn-info">Learn more.</button>
+              </div>
+            </div>
+          
+          
+            <div class="card">
+              <h3 class="card-header bg-info">
+                Day 2
+              </h3>
+              <div class="card-body">
+                <p class="card-text">
+                    Forecast info
+                </p>
+                <button class="btn btn-block btn-info">Learn more.</button>
+              </div>
+            </div>
+          </div>
+        <div class="col-12 col-sm-6 col-lg-2 mb-3">
+            <div class="card">
+              <h3 class="card-header bg-info">
+                Day 3
+              </h3>
+              <div class="card-body">
+                <p class="card-text">
+                    Forecast info
+                </p>
+                <button class="btn btn-block btn-info">Learn more.</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-2 mb-3">
+            <div class="card">
+              <h3 class="card-header bg-info">
+                Day 4
+              </h3>
+              <div class="card-body">
+                <p class="card-text">
+                  Forecast info
+                </p>
+                <button class="btn btn-block btn-info">Learn more.</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-2 mb-3">
+            <div class="card">
+              <h3 class="card-header bg-info">
+                Day 5
+              </h3>
+              <div class="card-body">
+                <p class="card-text">
+                    Forecast info
+                </p>
+                <button class="btn btn-block btn-info">Learn more.</button>
+              </div>
+            </div>
+          </div>
+    </main>
+
+
+
+
+
+
+
+
+
+
+
+    <script src="./assets/js/homepage.js"></script>
+  </body>
+</html>
