@@ -1,11 +1,13 @@
 var ApiKey = "0851b496d12ca4c702ac618ee6340d10";
 var cityInput = document.getElementById("city");
-var currentCity = document.querySelector('#current-city-info');
+var currentCityHeader = document.getElementById('current-city-info');
 
 var cityInfoContainer = document.getElementById('current-city-info-2');
 
+//api.openweathermap.org/data/2.5/forecast?q={city name},{state code},{country code}&appid={API key}
+
 function getApi() {
-    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityInput.value + "&appid=" + ApiKey;
+    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityInput.value + "&units=imperial&appid=" + ApiKey;
 
     fetch(queryURL)
         .then(function (response) {
@@ -22,9 +24,15 @@ function getApi() {
             console.log(data);
             console.log("Name ", data.name);
             //current city info name, temp, wind, humidity
-            currentCity.textContent = "City: " + data.name;
+            var currName = document.createElement('p');
+            currName.textContent = "City: " + data.name;
+            currentCityHeader.append(currName);
+            var today = dayjs(today).format('dddd MMM DD/YY');
+            currentCityHeader.append(today);
+           
+
             var currTemp = document.createElement('p');
-            currTemp.textContent = "Temperature(F): " + (((((data.main.temp)-273.15)*9)/5)+32);
+            currTemp.textContent = "Temperature(F): " + data.main.temp;
             cityInfoContainer.append(currTemp);
 
             var currWind = document.createElement('p');
@@ -35,9 +43,13 @@ function getApi() {
             currHumidity.textContent = "Humidity: " + data.main.humidity + "%";
             cityInfoContainer.append(currHumidity);
 
+            //add 5 day forecast info
+            //use dayjs.add to add a day to each date prior
+
         }).catch(function(error) {
             console.log(error);
-            currentCity.textContent = "Error fetching weather data";
+            currName.textContent = "Error fetching weather data";
+            currentCityHeader.append(currName);
         });
 }
   
@@ -50,4 +62,4 @@ document.addEventListener('DOMContentLoaded', function() {
   });
  
   //need to add dayJS for current date and then add 5 day forecast implemented within current city
-  
+ 
