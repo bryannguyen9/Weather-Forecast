@@ -59,7 +59,7 @@ function getApi() {
                     // rest of your code for displaying current weather
 
                     // loop through 5 day forecast data
-                    for (var i = 0; i < data.list.length; i++) {
+                    for (var i = 0; i < 5; i++) {
                     // display forecast data for each day
 
                     //need a way to identify which exact forecastData container to append dayData to at end need another index for day containers.
@@ -70,6 +70,17 @@ function getApi() {
                         var dateEl = document.createElement('p');
                         dateEl.textContent = date;
                         dayData.append(dateEl);
+                        
+                       
+                        data.list[i*8].main.temp_max;
+                        //need to do this for wind and humidity
+
+                        
+                        //i*8 for all data points
+
+                        //local storage
+
+
 
                         var temp = document.createElement('p');
                         temp.textContent = "Temperature(F): " + data.list[i].main.temp;
