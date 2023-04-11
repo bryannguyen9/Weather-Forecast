@@ -1,22 +1,96 @@
-var ApiKey = "0851b496d12ca4c702ac618ee6340d10";
+const API_KEY = "0851b496d12ca4c702ac618ee6340d10";
 const previousCities = JSON.parse(localStorage.getItem("cities")) || [];
 
 const searchCity = async (city) => {
-    const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=imperial`;
+    const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=imperial`;
     const response = await fetch(url);
     return response.json();
 };
 
 var cityInput = document.getElementById("city");
 var currentCityHeader = document.getElementById('current-city-info');
-
 var cityInfoContainer = document.getElementById('current-city-info-2');
-
 var forecastData = document.getElementById('forecast-data')
 
+const createDayData = (date, temp, wind, humidity) => {
+  const dayData = document.createElement("div");
+  dayData.classList.add("day-data");
+
+  const dateEl = document.createElement("p");
+  dateEl.textContent = date.format("dddd MMM DD, YYYY");
+  dayData.append(dateEl);
+
+  const tempEl = document.createElement("p");
+  tempEl.textContent = `Temperature(F): ${temp}`;
+  dayData.append(tempEl);
+
+  const windEl = document.createElement("p");
+  windEl.textContent = `Wind Speeds(MPH): ${wind.toFixed(2)}`;
+  dayData.append(windEl);
+
+  const humidityEl = document.createElement("p");
+  humidityEl.textContent = `Humidity: ${humidity}%`;
+  dayData.append(humidityEl);
+
+  return dayData;
+};
+
+const displayCurrentWeather = (data) => {
+  console.log(data);
+  console.log("Name ", data.name);
+  const currName = document.createElement("p");
+  currName.textContent = `City: ${data.name}`;
+  currentCityHeader.append(currName);
+
+  const today = dayjs();
+  const currDate = document.createElement("p");
+  currDate.textContent = today.format("dddd MMM DD, YYYY");
+  currentCityHeader.append(currDate);
+
+  const currTemp = document.createElement("p");
+  currTemp.textContent = `Temperature(F): ${data.main.temp}`;
+  cityInfoContainer.append(currTemp);
+
+  const currWind = document.createElement("p");
+  const windSpeed = (data.wind.speed / 1609.34) * 3600;
+  currWind.textContent = `Wind Speeds(MPH): ${windSpeed.toFixed(2)}`;
+  cityInfoContainer.append(currWind);
+
+  const currHumidity = document.createElement("p");
+  currHumidity.textContent = `Humidity: ${data.main.humidity}%`;
+  cityInfoContainer.append(currHumidity);
+};
+
+const displayForecastWeather = (data) => {
+  try {
+    // check if data and data.list are defined
+    if (data && data.list) {
+      console.log(data);
+      // loop through 5 day forecast data
+      for (let i = 0; i < 5; i++) {
+        // display forecast data for each day
+        const date = dayjs(data.list[i * 8].dt_txt);
+        const temp = data.list[i * 8].main.temp;
+        const windSpeed = (data.list[i * 8].wind.speed / 1609.34) * 3600;
+        const humidity = data.list[i * 8].main.humidity;
+
+        const dayData = createDayData(date, temp, windSpeed, humidity);
+        const dayContainer = document.getElementById(`day-${i + 1}`);
+        dayContainer.append(dayData);
+      }
+    } else {
+      throw new Error("Unexpected response format");
+    }
+  } catch (err) {
+    console.error(err);
+    const currName = document.createElement("p");
+    currName.textContent = "Error fetching weather";
+  }
+}
+
 function getApi() {
-    var currentWeatherQueryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityInput.value + "&units=imperial&appid=" + ApiKey;
-    var fiveDayForecastQueryURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityInput.value + "&units=imperial&appid=" + ApiKey;
+    var currentWeatherQueryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityInput.value + "&units=imperial&appid=" + API_KEY;
+    var fiveDayForecastQueryURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityInput.value + "&units=imperial&appid=" + API_KEY;
 
     fetch(currentWeatherQueryURL)
         .then(function (response) {
@@ -53,6 +127,8 @@ function getApi() {
     fetch(fiveDayForecastQueryURL)
         .then(function (response) {
             if (response.status === 200) {
+                previousCities.unshift(cityInput.value);
+                localStorage.setItem("cities", JSON.stringify(previousCities));
             return response.json();
             } else {
             throw new Error('Error fetching weather data');
@@ -113,4 +189,64 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault(); // prevent form submission
         getApi();
     });
+});
+
+const cityInputEl = document.querySelector("#city-input");
+const searchFormEl = document.querySelector("#search-form");
+const searchHistoryEl = document.querySelector("#search-history");
+
+// Load search history from local storage on page load
+const searchHistory = JSON.parse(localStorage.getItem("cities")) || [];
+
+// Create a function to save search history to local storage
+function saveSearchHistory(city) {
+  // Add the city to the beginning of the search history array
+  searchHistory.unshift(city);
+  // Limit search history to the 10 most recent searches
+  searchHistory.splice(10);
+  // Save the updated search history array to local storage
+  localStorage.setItem("cities", JSON.stringify(searchHistory));
+}
+
+function handleSearch(event) {
+    event.preventDefault();
+    const city = cityInputEl.value.trim();
+    if (city) {
+      // Add the city to the search history
+      saveSearchHistory(city);
+      // Create a button element for the city and append it to the page
+      const buttonEl = document.createElement("button");
+      buttonEl.textContent = city;
+      buttonEl.addEventListener("click", function() {
+        // Set the value of the city input to the button's text content
+        cityInputEl.value = buttonEl.textContent;
+        // Trigger the search form's submit event
+        searchFormEl.dispatchEvent(new Event('submit'));
+      });
+      document.getElementById("city-buttons").appendChild(buttonEl);
+      // Clear the city input
+      cityInputEl.value = "";
+    }
+  }
+
+searchFormEl.addEventListener("submit", handleSearch);
+
+const pastCitiesSearchBtn = document.getElementById("city-buttons");
+
+pastCitiesSearchBtn.addEventListener("click", function() {
+    // Get the city name from the search input
+    const cityName = document.getElementById("city").value;
+
+    localStorage.setItem("lastCity", cityName);
+
+    const lastCityEl = document.getElementById("lastCity");
+    lastCityEl.textContent = cityName;
+
+    const lastCity = localStorage.getItem("lastCity");
+
+    // If there is a last city, display it on the page
+    if (lastCity) {
+    const lastCityEl = document.getElementById("lastCity");
+    lastCityEl.textContent = lastCity;
+    }
 });
