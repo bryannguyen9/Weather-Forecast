@@ -1,4 +1,12 @@
 var ApiKey = "0851b496d12ca4c702ac618ee6340d10";
+const previousCities = JSON.parse(localStorage.getItem("cities")) || [];
+
+const searchCity = async (city) => {
+    const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=imperial`;
+    const response = await fetch(url);
+    return response.json();
+};
+
 var cityInput = document.getElementById("city");
 var currentCityHeader = document.getElementById('current-city-info');
 
@@ -6,11 +14,9 @@ var cityInfoContainer = document.getElementById('current-city-info-2');
 
 var forecastData = document.getElementById('forecast-data')
 
-//api.openweathermap.org/data/2.5/forecast?q={city name},{state code},{country code}&appid={API key}
-
 function getApi() {
-    var currentWeatherQueryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityInput.value + "&units=imperial&cnt=5&appid=" + ApiKey;
-    var fiveDayForecastQueryURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityInput.value + "&units=imperial&cnt=5&appid=" + ApiKey;
+    var currentWeatherQueryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityInput.value + "&units=imperial&appid=" + ApiKey;
+    var fiveDayForecastQueryURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityInput.value + "&units=imperial&appid=" + ApiKey;
 
     fetch(currentWeatherQueryURL)
         .then(function (response) {
@@ -36,7 +42,7 @@ function getApi() {
             cityInfoContainer.append(currTemp);
 
             var currWind = document.createElement('p');
-            currWind.textContent = "Wind Speeds(MPH): " + (((data.wind.speed)/1609.34)*3600);
+            currWind.textContent = "Wind Speeds(MPH): " + (((data.wind.speed)/1609.34)*3600).toFixed(2);
             cityInfoContainer.append(currWind);
 
             var currHumidity = document.createElement('p');
@@ -66,35 +72,24 @@ function getApi() {
                         var dayData = document.createElement('div');
                         dayData.classList.add('day-data');
 
-                        var date = dayjs(data.list[i].dt_txt).format('dddd MMM DD, YYYY');
+                        var date = dayjs(data.list[i*8].dt_txt).format('dddd MMM DD, YYYY');
                         var dateEl = document.createElement('p');
                         dateEl.textContent = date;
-                        dayData.append(dateEl);
-                        
-                       
-                        data.list[i*8].main.temp_max;
-                        //need to do this for wind and humidity
-
-                        
-                        //i*8 for all data points
-
-                        //local storage
-
-
+                        dayData.append(dateEl);                   
 
                         var temp = document.createElement('p');
-                        temp.textContent = "Temperature(F): " + data.list[i].main.temp;
+                        temp.textContent = "Temperature(F): " + data.list[i*8].main.temp;
                         dayData.append(temp);
 
                         var wind = document.createElement('p');
-                        wind.textContent = "Wind Speeds(MPH): " + (((data.list[i].wind.speed)/1609.34)*3600);
+                        wind.textContent = "Wind Speeds(MPH): " + (((data.list[i*8].wind.speed)/1609.34)*3600).toFixed(2);
                         dayData.append(wind);
 
                         var humidity = document.createElement('p');
-                        humidity.textContent = "Humidity: " + data.list[i].main.humidity + "%";
+                        humidity.textContent = "Humidity: " + data.list[i*8].main.humidity + "%";
                         dayData.append(humidity);
 
-                        forecastData.append(dayData);
+                        $(`#day-${i+1}`).append(dayData);
                     }
                 } else {
                     throw new Error('Unexpected response format');
@@ -109,7 +104,7 @@ function getApi() {
             currName.textContent = "Error fetching weather data";
             currentCityHeader.append(currName);
         });
-        })
+    })
 }
 
 //event listener on click of form submit to first DOMLoad then run the function of getAPI()
@@ -119,6 +114,3 @@ document.addEventListener('DOMContentLoaded', function() {
         getApi();
     });
 });
- 
- 
- 

@@ -26,13 +26,14 @@
    
       <div class="row">
         <div class="col-3">
-          <div class="card">
+          <div class="card" id = "userInputForm1">
             <h3 class="card-header text-uppercase">Search for a City:</h3>
             <form id="user-form" class="card-body">
               <label class="form-label" for="city">City</label>
               <input name="city" id="city" type="text" autofocus="true" class="form-input" />
               <button type="submit" class="btn" id="submit-button">Get 5 Day Forecast</button>
             </form>
+            <div id="city-buttons"></div>
           </div>
         </div>
         <div class="col-9">
@@ -73,7 +74,7 @@
                 Day 1
               </h3>
               <div class="card-body">
-                <p class="card-text" id = "forecast-data">
+                <p class="card-text" id = "day-1">
                   Forecast info
                 </p>
                 <button class="btn btn-block btn-info">Learn more.</button>
@@ -86,7 +87,7 @@
                 Day 2
               </h3>
               <div class="card-body">
-                <p class="card-text">
+                <p class="card-text" id = "day-2">
                   Forecast info
                 </p>
                 <button class="btn btn-block btn-info">Learn more.</button>
@@ -99,7 +100,7 @@
                 Day 3
               </h3>
               <div class="card-body">
-                <p class="card-text">
+                <p class="card-text" id = "day-3">
                   Forecast info
                 </p>
                 <button class="btn btn-block btn-info">Learn more.</button>
@@ -112,7 +113,7 @@
                 Day 4
               </h3>
               <div class="card-body">
-                <p class="card-text">
+                <p class="card-text" id = "day-4">
                   Forecast info
                 </p>
                 <button class="btn btn-block btn-info">Learn more.</button>
@@ -125,7 +126,7 @@
                 Day 5
               </h3>
               <div class="card-body">
-                <p class="card-text">
+                <p class="card-text" id = "day-5">
                   Forecast info
                 </p>
                 <button class="btn btn-block btn-info">Learn more.</button>

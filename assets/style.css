@@ -91,6 +91,8 @@
     transform: translate(0, 0);
     box-shadow: 2px 2px var(--dark);
   }
+
+  
   
   .hero {
     padding: 3% 4%;
