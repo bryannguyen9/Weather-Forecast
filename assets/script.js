@@ -187,6 +187,7 @@ function getApi() {
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("submit-button").addEventListener("click", function(event) {
         event.preventDefault(); // prevent form submission
+        clearInputs();
         getApi();
     });
 });
@@ -229,6 +230,7 @@ function handleSearch(event) {
     }
   }
 
+/*
 searchFormEl.addEventListener("submit", handleSearch);
 
 const pastCitiesSearchBtn = document.getElementById("city-buttons");
@@ -250,3 +252,12 @@ pastCitiesSearchBtn.addEventListener("click", function() {
     lastCityEl.textContent = lastCity;
     }
 });
+*/
+
+function clearInputs(){
+  $(document.getElementById("current-city-info")).text(" ");
+  $(document.getElementById("currentDay")).text(" ");
+  $(document.getElementById("current-city-info-2")).text(" ");
+  $(document.getElementById("weatherdaycard")).children(0).children(0).children(1).children(0).text(" ");
+  
+}
