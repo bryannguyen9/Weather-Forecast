@@ -89,8 +89,8 @@ const displayForecastWeather = (data) => {
 }
 
 function getApi() {
-    var currentWeatherQueryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityInput.value + "&units=imperial&appid=" + API_KEY;
-    var fiveDayForecastQueryURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityInput.value + "&units=imperial&appid=" + API_KEY;
+    var currentWeatherQueryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityInput.value + "&units=imperial&appid=" + API_KEY;
+    var fiveDayForecastQueryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityInput.value + "&units=imperial&appid=" + API_KEY;
 
     fetch(currentWeatherQueryURL)
         .then(function (response) {
